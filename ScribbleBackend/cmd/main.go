@@ -41,7 +41,7 @@ func main() {
 	log.Println("Shutting down server...")
 
 	ctx, cancle := context.WithTimeout(context.Background(), 5*time.Second)
-	// give 5 seconds for server to cleanup request and shutdown gracefully
+	// give 5 seconds for server to cleanup request and shutdown gracefully.
 	defer cancle()
 	srv.Shutdown(ctx)
 }
