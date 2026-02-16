@@ -1,0 +1,28 @@
+[gd_resource type="Theme" format=3 uid="uid://cuhqhnmi5u27x"]
+
+[ext_resource type="Texture2D" uid="uid://b2xoxtytabnba" path="res://assets/PNG/buttonLong_beige.png" id="1_u6cuj"]
+[ext_resource type="Texture2D" uid="uid://c43h5o0x6viku" path="res://assets/PNG/buttonLong_beige_pressed.png" id="2_pevr2"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_u6cuj"]
+texture = ExtResource("1_u6cuj")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_61tn7"]
+texture = ExtResource("1_u6cuj")
+texture_margin_left = 10.0
+texture_margin_top = 10.0
+texture_margin_right = 10.0
+texture_margin_bottom = 10.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_glllx"]
+texture = ExtResource("2_pevr2")
+
+[resource]
+Button/colors/font_color = Color(0.0177042, 0.0366334, 0.0120045, 1)
+Button/colors/font_hover_color = Color(0.0519704, 0.0519712, 0.0519712, 1)
+Button/colors/font_hover_pressed_color = Color(0.0728426, 0.0728426, 0.0728426, 1)
+Button/colors/font_pressed_color = Color(0.0646965, 0.0646965, 0.0646965, 1)
+Button/constants/align_to_largest_stylebox = 1
+Button/font_sizes/font_size = 20
+Button/styles/hover = SubResource("StyleBoxTexture_u6cuj")
+Button/styles/normal = SubResource("StyleBoxTexture_61tn7")
+Button/styles/pressed = SubResource("StyleBoxTexture_glllx")

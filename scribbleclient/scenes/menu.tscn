@@ -1,0 +1,94 @@
+[gd_scene format=3 uid="uid://cp2d6paoch680"]
+
+[ext_resource type="Script" uid="uid://bqi0nn1fbo11v" path="res://scripts/menu.gd" id="1_vjb58"]
+[ext_resource type="Theme" uid="uid://cuhqhnmi5u27x" path="res://thems/small_button_theme.tres" id="1_yqeox"]
+[ext_resource type="Texture2D" uid="uid://b70llcns4gyy7" path="res://assets/layers/parallax-mountain-bg.png" id="2_con2f"]
+[ext_resource type="Texture2D" uid="uid://bow4u5cidmhnt" path="res://assets/layers/parallax-mountain-montain-far.png" id="3_mhnvy"]
+[ext_resource type="Texture2D" uid="uid://cncpd0fhgutn4" path="res://assets/layers/parallax-mountain-mountains.png" id="4_4ytvr"]
+[ext_resource type="Texture2D" uid="uid://dxg0qoxdjvbj7" path="res://assets/layers/parallax-mountain-foreground-trees.png" id="5_g3eks"]
+
+[node name="Menu" type="Control" unique_id=1442472295]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_vjb58")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1855862350]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_con2f")
+expand_mode = 2
+stretch_mode = 6
+
+[node name="Sprite2D" type="Sprite2D" parent="TextureRect" unique_id=2030788321]
+position = Vector2(172, 556)
+scale = Vector2(1.26471, 1.05)
+texture = ExtResource("3_mhnvy")
+
+[node name="Sprite2D2" type="Sprite2D" parent="TextureRect" unique_id=1693066711]
+position = Vector2(824, 560)
+scale = Vector2(1.26471, 1.05)
+texture = ExtResource("3_mhnvy")
+
+[node name="Sprite2D3" type="Sprite2D" parent="TextureRect" unique_id=25526099]
+position = Vector2(300, 568)
+scale = Vector2(1.10294, 1)
+texture = ExtResource("4_4ytvr")
+
+[node name="Sprite2D4" type="Sprite2D" parent="TextureRect" unique_id=1808443455]
+position = Vector2(848, 568)
+scale = Vector2(1.10294, 1)
+texture = ExtResource("4_4ytvr")
+
+[node name="Sprite2D5" type="Sprite2D" parent="TextureRect" unique_id=754806698]
+position = Vector2(256, 568)
+texture = ExtResource("5_g3eks")
+
+[node name="Sprite2D6" type="Sprite2D" parent="TextureRect" unique_id=851949498]
+position = Vector2(760, 568)
+texture = ExtResource("5_g3eks")
+
+[node name="Sprite2D7" type="Sprite2D" parent="TextureRect" unique_id=1510453466]
+position = Vector2(1240, 568)
+texture = ExtResource("5_g3eks")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1635237200]
+layout_mode = 1
+anchors_preset = 13
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -134.0
+offset_right = 134.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer" unique_id=2066795780]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+size_flags_stretch_ratio = 2.0
+theme_override_constants/separation = 20
+
+[node name="PlayButton" type="Button" parent="VBoxContainer/HBoxContainer" unique_id=210277871]
+layout_mode = 2
+theme = ExtResource("1_yqeox")
+text = "Play"
+
+[node name="PlayWithFriendsButton" type="Button" parent="VBoxContainer/HBoxContainer" unique_id=863871052]
+layout_mode = 2
+theme = ExtResource("1_yqeox")
+text = "Play With Friends"
+
+[node name="Control" type="Control" parent="VBoxContainer" unique_id=57395961]
+custom_minimum_size = Vector2(0, 150)
+layout_mode = 2
+size_flags_stretch_ratio = 8.1
