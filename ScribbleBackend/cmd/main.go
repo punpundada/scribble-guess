@@ -11,9 +11,11 @@ import (
 
 	"scribble-backend/internal/config"
 	"scribble-backend/internal/server"
+	"scribble-backend/pkg/logger"
 )
 
 func main() {
+	logger.Init()
 	cfg, err := config.Load()
 	if err != nil {
 		log.Fatalf("load config: %v", err)
@@ -27,7 +29,7 @@ func main() {
 	}
 
 	go func() {
-		log.Printf("Server running on port %d", cfg.ServerPort)
+		log.Printf("Server running on http://localhost:%d", cfg.ServerPort)
 		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 			log.Fatalf("listen: %s\n", err)
 		}

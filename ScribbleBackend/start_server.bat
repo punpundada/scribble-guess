@@ -1,6 +1,6 @@
 @echo off
 
-set WINDOW_NAME=Go Server
+set WINDOW_NAME=Scribble backend server
 set SERVER_PORT=7412
 
 title %WINDOW_NAME%

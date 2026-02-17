@@ -48,6 +48,4 @@ export SERVER_PORT=8080
 **Troubleshooting & Notes**
 - `SERVER_PORT` must be a valid integer within `0`–`65535`. If missing or invalid, the server will fail to start with an error.
 - If you change the port in `start_server.bat`, ensure it remains within the valid range.
-- If you intend to restrict the port to smaller ranges (for example `uint8`), update `internal/config/config.go` accordingly and verify all call sites.
-
-If you'd like, I can also add a small `Makefile` or PowerShell script for common tasks (build, run, test). 
+- If you intend to restrict the port to smaller ranges (for example `uint16`), update `internal/config/config.go` accordingly and verify all call sites.
