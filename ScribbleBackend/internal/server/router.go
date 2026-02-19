@@ -22,9 +22,11 @@ func NewRouter() http.Handler {
 
 	router.Get("/health", handler.Health)
 
-	router.Route("/api", func(api chi.Router) {
-		api.Get("/ws", handler.WebSocketHandler)
-	})
+	router.Route("/api", WebSocketRoutes)
 
 	return router
+}
+
+func WebSocketRoutes(router chi.Router) {
+	router.Get("/ws", handler.WebSocketHandler)
 }

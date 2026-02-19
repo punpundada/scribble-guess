@@ -4,8 +4,10 @@ import (
 	"log"
 	"net/http"
 
+	"scribble-backend/internal/constants"
 	ws "scribble-backend/pkg/websocket"
 
+	"github.com/google/uuid"
 	"github.com/gorilla/websocket"
 )
 
@@ -26,12 +28,18 @@ func WebSocketHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	hub.Clients[conn] = true
+	uuid := uuid.New().String()
+	hub.Rooms[uuid] = constants.NewRoom(uuid)
 
 	for {
 		_, msg, err := conn.ReadMessage()
 		if err != nil {
-			delete(hub.Clients, conn)
+			room, exists := hub.GetRoomFromId(uuid)
+			if exists {
+				room.Mu.Lock()
+				delete(room.Clients, conn)
+				room.Mu.Unlock()
+			}
 			conn.Close()
 			break
 		}
