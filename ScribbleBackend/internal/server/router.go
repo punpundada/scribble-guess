@@ -4,12 +4,23 @@ import (
 	"net/http"
 	"scribble-backend/internal/handler"
 	m "scribble-backend/internal/middleware"
+	"scribble-backend/pkg/websocket"
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/cors"
 )
 
-func NewRouter() http.Handler {
+type Server struct {
+	Hub *websocket.Hub
+}
+
+func NewServer(hub *websocket.Hub) *Server {
+	return &Server{
+		Hub: hub,
+	}
+}
+
+func (s *Server) NewRouter() http.Handler {
 	router := chi.NewRouter()
 
 	router.Use(m.RequestID)
@@ -22,11 +33,18 @@ func NewRouter() http.Handler {
 
 	router.Get("/health", handler.Health)
 
-	router.Route("/api", WebSocketRoutes)
-
+	router.Route("/api", s.WebSocketRoutes)
+	router.Route("/api/room", s.RoomRoutes)
 	return router
 }
 
-func WebSocketRoutes(router chi.Router) {
-	router.Get("/ws", handler.WebSocketHandler)
+func (s *Server) WebSocketRoutes(router chi.Router) {
+	wsHandler := &handler.WS{Hub: s.Hub}
+	router.Get("/ws", wsHandler.WebSocketHandler)
+}
+
+func (s *Server) RoomRoutes(router chi.Router) {
+	roohHandler := &handler.RoomHandler{Hub: s.Hub}
+	router.Post("/create", roohHandler.CreateRoom)
+	router.Post("/delete", roohHandler.DeleteRoom)
 }

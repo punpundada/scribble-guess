@@ -12,6 +12,7 @@ import (
 	"scribble-backend/internal/config"
 	"scribble-backend/internal/server"
 	"scribble-backend/pkg/logger"
+	"scribble-backend/pkg/websocket"
 )
 
 func main() {
@@ -21,6 +22,7 @@ func main() {
 		log.Fatalf("load config: %v", err)
 	}
 
+	server := server.NewServer(websocket.NewHub())
 	router := server.NewRouter()
 
 	srv := &http.Server{

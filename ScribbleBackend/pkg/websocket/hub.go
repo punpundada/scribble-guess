@@ -1,22 +1,22 @@
 package websocket
 
 import (
-	"encoding/json"
-	"log"
 	"scribble-backend/internal/constants"
 	"sync"
+
+	"github.com/google/uuid"
 )
 
 type Hub struct {
-	Rooms     map[string]*constants.Room
-	Broadcast chan []byte
-	mu        sync.RWMutex
+	Rooms map[string]*constants.Room
+	// Broadcast chan []byte
+	mu sync.RWMutex
 }
 
 func NewHub() *Hub {
 	return &Hub{
-		Rooms:     make(map[string]*constants.Room, 10),
-		Broadcast: make(chan []byte),
+		Rooms: make(map[string]*constants.Room, 10),
+		// Broadcast: make(chan []byte),
 	}
 }
 
@@ -34,22 +34,16 @@ type Message struct {
 	RoomId string `json:"roomId"`
 }
 
-func (h *Hub) Run() {
-
-	for {
-		msg := <-h.Broadcast
-		var message Message
-		err := json.Unmarshal(msg, &message)
-		if err != nil {
-			log.Println("Error unmarshalling message:", err)
-			continue
-		}
-		log.Println("msg", message)
-		room, exists := h.GetRoomFromId(message.RoomId)
-		if !exists {
-			log.Printf("Room with ID %s not found\n", message.RoomId)
-			continue
-		}
-		room.BroadcastMessage(constants.Message(message))
+func (h *Hub) GetOrCreateRoom(roomId string) *constants.Room {
+	id := roomId
+	if len(id) == 0 {
+		id = uuid.New().String()
 	}
+	room, ok := h.Rooms[id]
+	if !ok {
+		room = constants.NewRoom(id)
+		h.Rooms[id] = room
+		go room.Run()
+	}
+	return room
 }
