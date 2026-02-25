@@ -47,4 +47,5 @@ func (s *Server) RoomRoutes(router chi.Router) {
 	roohHandler := &handler.RoomHandler{Hub: s.Hub}
 	router.Post("/create", roohHandler.CreateRoom)
 	router.Post("/delete", roohHandler.DeleteRoom)
+	router.Get("/random", roohHandler.GetRandomRoomId)
 }

@@ -15,8 +15,16 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 [application]
 
 config/name="ScribbleClient"
+run/main_scene="uid://cp2d6paoch680"
 config/features=PackedStringArray("4.6", "GL Compatibility")
 config/icon="res://icon.svg"
+
+[autoload]
+
+LoadManager="*uid://cuicjiwovu4o7"
+ENV="*uid://cfeeoai8llloe"
+WebsocketManager="*uid://6yt1j1pu2u4j"
+GlobalState="*uid://hs5eu6bwrbay"
 
 [display]
 

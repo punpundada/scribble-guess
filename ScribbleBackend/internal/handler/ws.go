@@ -31,7 +31,7 @@ func (ws *WS) WebSocketHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	roomId := r.URL.Query().Get("roomId")
-
+	log.Println("roomId", roomId)
 	room := ws.Hub.GetOrCreateRoom(roomId)
 	clientId := uuid.New().String()
 
@@ -39,14 +39,17 @@ func (ws *WS) WebSocketHandler(w http.ResponseWriter, r *http.Request) {
 
 	client := &constants.Client{
 		Conn:   conn,
-		Send:   make(chan []byte, 1024),
+		Send:   make(chan *constants.BroadcastMessage, 1024),
 		RoomID: room.ID,
 		Id:     clientId,
 	}
 	room.Register <- client
-	room.BroadcastAll <- constants.NewBroadcastMessage(
-		[]byte(`{"message": "A new user has joined the room", "roomId": "`+room.ID+`"}`),
-		client.Id)
+
+	room.BroadcastAll <- constants.NewBroadcastMessage("message", &constants.Meta{
+		SenderId: client.Id,
+		RoomId:   room.ID,
+		Time:     time.Now().Unix(),
+	}, "User "+client.Id+" has joined the room")
 
 	go writePump(client)
 	readPump(room, client)
@@ -62,11 +65,12 @@ func readPump(room *constants.Room, c *constants.Client) {
 		c.Conn.Close()
 	}()
 
-	const maxMessageSize = 1024 * 8 // 8KB limit
+	const maxMessageSize = 1024 * 16 // 8KB limit
 	c.Conn.SetReadLimit(maxMessageSize)
-	c.Conn.SetReadDeadline(time.Now().Add(10 * time.Minute))
+	t := time.Now().Add(10 * time.Minute)
+	c.Conn.SetReadDeadline(t)
 	c.Conn.SetPongHandler(func(string) error {
-		c.Conn.SetReadDeadline(time.Now().Add(10 * time.Minute))
+		c.Conn.SetReadDeadline(t)
 		return nil
 	})
 
@@ -78,14 +82,19 @@ func readPump(room *constants.Room, c *constants.Client) {
 			}
 			break
 		}
-		log.Printf("client %s in room %s sent message: %s", c.Id, c.RoomID, string(raw))
-		room.Broadcast <- constants.NewBroadcastMessage(raw, c.Id)
+		meta := constants.Meta{
+			SenderId: c.Id,
+			RoomId:   c.RoomID,
+			Time:     time.Now().Unix(),
+		}
+		room.Broadcast <- constants.NewBroadcastMessage("message", &meta, string(raw))
 	}
 }
 
 func writePump(c *constants.Client) {
 	for msg := range c.Send {
-		err := c.Conn.WriteMessage(websocket.TextMessage, msg)
+		err := c.Conn.WriteJSON(msg)
+		// err := c.Conn.(websocket.TextMessage, msg)
 		if err != nil {
 			break
 		}

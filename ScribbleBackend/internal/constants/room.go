@@ -1,20 +1,25 @@
 package constants
 
 import (
-	"fmt"
-	"log"
 	"sync"
 )
 
+type Meta struct {
+	SenderId string `json:"sender_id"`
+	RoomId   string `json:"room_id"`
+	Time     int64  `json:"time"`
+}
 type BroadcastMessage struct {
-	Message  []byte `json:"message"`
-	ClientId string `json:"clientId"`
+	MessageType string      `json:"message_type"`
+	Meta        Meta        `json:"meta"`
+	Data        interface{} `json:"data"`
 }
 
-func NewBroadcastMessage(message []byte, clientId string) *BroadcastMessage {
+func NewBroadcastMessage(messageType string, meta *Meta, data interface{}) *BroadcastMessage {
 	return &BroadcastMessage{
-		Message:  message,
-		ClientId: clientId,
+		MessageType: messageType,
+		Meta:        *meta,
+		Data:        data,
 	}
 }
 
@@ -64,23 +69,14 @@ func (r *Room) BroadcastMessage(msg *BroadcastMessage) {
 	r.Mu.RLock()
 	clients := make([]*Client, 0, len(r.Clients))
 	for c := range r.Clients {
-		log.Println("client id", c.Id)
-		if msg.ClientId == c.Id {
-			log.Println("Skipping broadcast to client", c.Id, "as it is the sender of the message")
+		if msg.Meta.SenderId == c.Id {
 			continue
 		}
 		clients = append(clients, c)
 	}
 	r.Mu.RUnlock()
 	for _, client := range clients {
-		select {
-		case client.Send <- fmt.Appendf(nil, `{"message": "%s","to":"%s"}`, msg.Message, msg.ClientId):
-			// default:
-			// 	r.Mu.Lock()
-			// 	delete(r.Clients, client)
-			// 	r.Mu.Unlock()
-			// 	close(client.Send)
-		}
+		client.Send <- msg
 	}
 }
 
@@ -92,13 +88,6 @@ func (r *Room) BroadcastAllMessage(msg *BroadcastMessage) {
 	}
 	r.Mu.RUnlock()
 	for _, client := range clients {
-		select {
-		case client.Send <- fmt.Appendf(nil, `{"message": "%s","toClient":"%s"}`, msg.Message, msg.ClientId):
-			// default:
-			// 	r.Mu.Lock()
-			// 	delete(r.Clients, client)
-			// 	r.Mu.Unlock()
-			// 	close(client.Send)
-		}
+		client.Send <- msg
 	}
 }

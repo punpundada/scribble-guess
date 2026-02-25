@@ -1,12 +1,10 @@
 package handler
 
 import (
-	"log"
+	"encoding/json"
+	"math/rand"
 	"net/http"
-	"scribble-backend/internal/constants"
 	"scribble-backend/pkg/websocket"
-
-	"github.com/google/uuid"
 )
 
 type RoomHandler struct {
@@ -14,10 +12,7 @@ type RoomHandler struct {
 }
 
 func (r *RoomHandler) CreateRoom(w http.ResponseWriter, req *http.Request) {
-	uuid := uuid.New().String()
-	room := constants.NewRoom(uuid)
-	r.Hub.Rooms[uuid] = room
-	log.Printf("new room created with id %s", room.ID)
+	room := r.Hub.GetOrCreateRoom("")
 	w.Write([]byte(`{"roomId":"` + room.ID + `"}`))
 }
 
@@ -31,4 +26,21 @@ func (r *RoomHandler) DeleteRoom(w http.ResponseWriter, req *http.Request) {
 	}
 	delete(r.Hub.Rooms, roomId)
 	w.Write([]byte(`{"status":"ok"}`))
+}
+
+func (r *RoomHandler) GetRandomRoomId(w http.ResponseWriter, req *http.Request) {
+	rommLen := len(r.Hub.Rooms)
+	if rommLen == 0 {
+		room := r.Hub.GetOrCreateRoom("")
+		w.Write([]byte(`{"roomId":"` + room.ID + `"}`))
+		return
+	}
+	keys := make([]string, 0, len(r.Hub.Rooms))
+	for k := range r.Hub.Rooms {
+		keys = append(keys, k)
+	}
+	randomKey := keys[rand.Intn(len(keys))]
+	json.NewEncoder(w).Encode(map[string]string{
+		"roomId": randomKey,
+	})
 }

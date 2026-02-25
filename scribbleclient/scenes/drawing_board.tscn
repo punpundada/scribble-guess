@@ -1,0 +1,39 @@
+[gd_scene format=3 uid="uid://cmhk0adjuq3ym"]
+
+[ext_resource type="PackedScene" uid="uid://54dx1coaf3i7" path="res://scenes/chatpanel.tscn" id="1_s3fmy"]
+
+[node name="DrawingBoard" type="Control" unique_id=657014129]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1018896740]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="LeftPanel" type="Panel" parent="HBoxContainer" unique_id=1645685968]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
+
+[node name="MiddlePanel" type="Panel" parent="HBoxContainer" unique_id=182153282]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 6.0
+
+[node name="RightPanel" type="Panel" parent="HBoxContainer" unique_id=151759218]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
+
+[node name="Chatpanel" parent="HBoxContainer/RightPanel" unique_id=1941253103 instance=ExtResource("1_s3fmy")]
+layout_mode = 1

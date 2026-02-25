@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://54dx1coaf3i7"]
+
+[ext_resource type="Script" uid="uid://dic4kug2hpjsf" path="res://scripts/chatpanel.gd" id="1_iiww2"]
+[ext_resource type="PackedScene" uid="uid://bv0v5c4hllxw0" path="res://scenes/message_item.tscn" id="2_73f11"]
+
+[node name="Chatpanel" type="Control" unique_id=1941253103]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_iiww2")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="." unique_id=1324408338]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer" unique_id=867019566]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 30
+
+[node name="MessageItem" parent="ScrollContainer/VBoxContainer" unique_id=95619657 instance=ExtResource("2_73f11")]
+layout_mode = 2
+size_flags_horizontal = 1

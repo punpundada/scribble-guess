@@ -1,0 +1,11 @@
+on play button click
+    make an api call to backend
+    get a random room id in return
+    if no room exist create a room and return roomId
+    make user join that room by using /ws?roomId={} ws request
+    room will have 1 painter others will be guessers 10 players in one room max
+
+room={
+    painterId,
+    isPainting,
+}
