@@ -1,6 +1,8 @@
 [gd_scene format=3 uid="uid://cmhk0adjuq3ym"]
 
+[ext_resource type="PackedScene" uid="uid://dwhpqhrmu2htr" path="res://scenes/Canvas.tscn" id="1_8w1aa"]
 [ext_resource type="PackedScene" uid="uid://54dx1coaf3i7" path="res://scenes/chatpanel.tscn" id="1_s3fmy"]
+[ext_resource type="Script" uid="uid://lfsist88j2e6" path="res://scripts/drawing_board.gd" id="1_wxded"]
 
 [node name="DrawingBoard" type="Control" unique_id=657014129]
 layout_mode = 3
@@ -9,6 +11,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_wxded")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1018896740]
 layout_mode = 1
@@ -24,7 +27,8 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 2.0
 
-[node name="MiddlePanel" type="Panel" parent="HBoxContainer" unique_id=182153282]
+[node name="DrawingCanvas" parent="HBoxContainer" unique_id=1561579554 instance=ExtResource("1_8w1aa")]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 6.0

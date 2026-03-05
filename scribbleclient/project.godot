@@ -25,10 +25,19 @@ LoadManager="*uid://cuicjiwovu4o7"
 ENV="*uid://cfeeoai8llloe"
 WebsocketManager="*uid://6yt1j1pu2u4j"
 GlobalState="*uid://hs5eu6bwrbay"
+Toast="*uid://bo8saqs0ehf51"
 
 [display]
 
 window/size/always_on_top=true
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/tattomoosa.spinner/plugin.cfg")
+
+[global_group]
+
+ToastGroup="ToastGroup"
 
 [rendering]
 

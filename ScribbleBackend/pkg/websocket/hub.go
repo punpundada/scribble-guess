@@ -1,10 +1,11 @@
 package websocket
 
 import (
+	"math/rand/v2"
 	"scribble-backend/internal/constants"
+	"strconv"
 	"sync"
-
-	"github.com/google/uuid"
+	"time"
 )
 
 type Hub struct {
@@ -35,9 +36,12 @@ type Message struct {
 }
 
 func (h *Hub) GetOrCreateRoom(roomId string) *constants.Room {
+	seed := rand.NewPCG(uint64(time.Now().UnixNano()), 10)
+	rnd := rand.New(seed)
+
 	id := roomId
 	if len(id) == 0 {
-		id = uuid.New().String()
+		id = strconv.Itoa(rnd.IntN(899999) + 100000)
 	}
 	room, ok := h.Rooms[id]
 	if !ok {

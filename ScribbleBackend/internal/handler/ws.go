@@ -1,8 +1,10 @@
 package handler
 
 import (
+	"encoding/json"
 	"log"
 	"net/http"
+	"strings"
 	"time"
 
 	"scribble-backend/internal/constants"
@@ -31,7 +33,7 @@ func (ws *WS) WebSocketHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	roomId := r.URL.Query().Get("roomId")
-	log.Println("roomId", roomId)
+	log.Println("roomId", strings.TrimSpace(roomId))
 	room := ws.Hub.GetOrCreateRoom(roomId)
 	clientId := uuid.New().String()
 
@@ -45,10 +47,10 @@ func (ws *WS) WebSocketHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	room.Register <- client
 
-	room.BroadcastAll <- constants.NewBroadcastMessage("message", &constants.Meta{
+	room.BroadcastAll <- constants.NewBroadcastMessage("connected", &constants.Meta{
 		SenderId: client.Id,
 		RoomId:   room.ID,
-		Time:     time.Now().Unix(),
+		Time:     float64(time.Now().Unix()),
 	}, "User "+client.Id+" has joined the room")
 
 	go writePump(client)
@@ -65,7 +67,7 @@ func readPump(room *constants.Room, c *constants.Client) {
 		c.Conn.Close()
 	}()
 
-	const maxMessageSize = 1024 * 16 // 8KB limit
+	const maxMessageSize = 1024 * 16
 	c.Conn.SetReadLimit(maxMessageSize)
 	t := time.Now().Add(10 * time.Minute)
 	c.Conn.SetReadDeadline(t)
@@ -82,19 +84,23 @@ func readPump(room *constants.Room, c *constants.Client) {
 			}
 			break
 		}
+		var msg constants.BroadcastMessage
+		if err := json.Unmarshal(raw, &msg); err != nil {
+			log.Printf("Error unmarshaling message for client %s in room %s: %v", c.Id, c.RoomID, err)
+			continue
+		}
 		meta := constants.Meta{
 			SenderId: c.Id,
 			RoomId:   c.RoomID,
-			Time:     time.Now().Unix(),
+			Time:     float64(time.Now().Unix()),
 		}
-		room.Broadcast <- constants.NewBroadcastMessage("message", &meta, string(raw))
+		room.BroadcastAll <- constants.NewBroadcastMessage("message", &meta, msg.Data)
 	}
 }
 
 func writePump(c *constants.Client) {
 	for msg := range c.Send {
 		err := c.Conn.WriteJSON(msg)
-		// err := c.Conn.(websocket.TextMessage, msg)
 		if err != nil {
 			break
 		}

@@ -5,14 +5,14 @@ import (
 )
 
 type Meta struct {
-	SenderId string `json:"sender_id"`
-	RoomId   string `json:"room_id"`
-	Time     int64  `json:"time"`
+	SenderId string  `json:"sender_id"`
+	RoomId   string  `json:"room_id"`
+	Time     float64 `json:"time"`
 }
 type BroadcastMessage struct {
-	MessageType string      `json:"message_type"`
-	Meta        Meta        `json:"meta"`
-	Data        interface{} `json:"data"`
+	MessageType string `json:"message_type"`
+	Meta        Meta   `json:"meta"`
+	Data        any    `json:"data"`
 }
 
 func NewBroadcastMessage(messageType string, meta *Meta, data interface{}) *BroadcastMessage {

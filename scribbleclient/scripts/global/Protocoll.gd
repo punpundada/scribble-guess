@@ -3,7 +3,7 @@ class_name Protocol
 
 static func create(
 	messaage_type:String, 
-	data:Dictionary,
+	data:Variant,
 	sender_id:String,
 	room_id:String
 	)->Dictionary:

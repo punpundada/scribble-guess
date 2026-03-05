@@ -26,7 +26,7 @@ func connect_socket(room_id:String=""):
 	else:
 		print("Websocket Connected")
 	
-func send(type:String, data:Dictionary,sender_id:String,room_id:String):
+func send(type:String, data:Variant,sender_id:String,room_id:String):
 	if socket.get_ready_state() != WebSocketPeer.STATE_OPEN:
 		return
 	var msg:Dictionary = Protocol.create(type,data,sender_id,room_id)

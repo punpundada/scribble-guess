@@ -1,0 +1,162 @@
+[gd_scene format=3 uid="uid://cg82d4n4n4d1r"]
+
+[ext_resource type="Script" uid="uid://bo8saqs0ehf51" path="res://scripts/global/toast.gd" id="1_og0ge"]
+[ext_resource type="Texture2D" uid="uid://nmkacpriyih2" path="res://assets/PNG/iconCross_blue.png" id="2_nbgps"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_og0ge"]
+bg_color = Color(0.8901961, 0.98039216, 0.98039216, 1)
+border_width_left = 10
+border_color = Color(0.86679393, 0.82256466, 0.05852177, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 10
+
+[sub_resource type="Theme" id="Theme_nbgps"]
+Panel/styles/panel = SubResource("StyleBoxFlat_og0ge")
+
+[sub_resource type="LabelSettings" id="LabelSettings_37n8t"]
+font_size = 18
+font_color = Color(0, 0, 0, 1)
+
+[sub_resource type="Animation" id="Animation_res7m"]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("HBoxContainer:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(1155, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="Animation" id="Animation_nbgps"]
+resource_name = "enter"
+length = 1.5
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("HBoxContainer:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(1155, -0.25, 0, 0.07791855, -1123.7228, 0, -0.06501037, -460.85034, 0, 0),
+"times": PackedFloat32Array(0, 1.5)
+}
+
+[sub_resource type="Animation" id="Animation_eidrl"]
+resource_name = "exit"
+length = 1.5
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("HBoxContainer:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(0, -0.0005, 0, 0.0005, 0, 2500, -1.9053787, -3948.5674, 0, 0),
+"times": PackedFloat32Array(0, 1.5)
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_res7m"]
+_data = {
+&"RESET": SubResource("Animation_res7m"),
+&"enter": SubResource("Animation_nbgps"),
+&"exit": SubResource("Animation_eidrl")
+}
+
+[node name="Toast" type="CanvasLayer" unique_id=135857991 groups=["ToastGroup"]]
+script = ExtResource("1_og0ge")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1115874954]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1155.0
+offset_right = 1155.0049
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Control" type="Control" parent="HBoxContainer" unique_id=1039409648]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 1.5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer" unique_id=1390679634]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 8.0
+alignment = 1
+
+[node name="Control" type="Control" parent="HBoxContainer/VBoxContainer" unique_id=1126427501]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 3.0
+
+[node name="Control2" type="Control" parent="HBoxContainer/VBoxContainer" unique_id=870034809]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 4.0
+
+[node name="Panel" type="Panel" parent="HBoxContainer/VBoxContainer" unique_id=1824653191]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.5
+theme = SubResource("Theme_nbgps")
+
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/VBoxContainer/Panel" unique_id=681646533]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+
+[node name="ToastLabel" type="Label" parent="HBoxContainer/VBoxContainer/Panel/MarginContainer" unique_id=35503031]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+text = "Disconnected from server"
+label_settings = SubResource("LabelSettings_37n8t")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="CloseButton" type="Button" parent="HBoxContainer/VBoxContainer/Panel" unique_id=913395704]
+custom_minimum_size = Vector2(36, 0)
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -8.0
+grow_horizontal = 0
+grow_vertical = 2
+icon = ExtResource("2_nbgps")
+icon_alignment = 1
+expand_icon = true
+
+[node name="Control3" type="Control" parent="HBoxContainer/VBoxContainer" unique_id=2077297253]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.5
+
+[node name="Control2" type="Control" parent="HBoxContainer" unique_id=1063651884]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 1.5
+
+[node name="DisplayTimer" type="Timer" parent="." unique_id=451701545]
+
+[node name="ToastAnimationPlayer" type="AnimationPlayer" parent="." unique_id=1238166536]
+unique_name_in_owner = true
+libraries/ = SubResource("AnimationLibrary_res7m")
+autoplay = &"enter"
+
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/Panel/CloseButton" to="." method="_on_close_button_pressed"]

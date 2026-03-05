@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://dwhpqhrmu2htr"]
+
+[ext_resource type="Script" uid="uid://co6omw006e3ox" path="res://scripts/canvas.gd" id="1_5al4m"]
+
+[node name="DrawingCanvas" type="Panel" unique_id=262018198]
+script = ExtResource("1_5al4m")
+current_tool = 3
